@@ -1,66 +1,90 @@
+#!/usr/bin/env python
 import argparse
 import python_weather
 from termcolor import colored
 import asyncio
 import os
 
+# Declare Moon Phases
 phases = [phase for phase in python_weather.enums.Phase]
 emojis = ["", "", "", "", "", "", "", ""]
 
+
 def moon_emoji(phase):
+    """
+    Returns emoji for moon phase.
+    """
     return f"{phase} {emojis[phases.index(phase)]}"
 
+
+def get_temp_color(temp):
+    """
+    Gets color for temp display
+    """
+    if temp <= 28:
+        return "blue"
+    elif 28 < temp <= 30:
+       return "yellow"
+    else:
+        return "red"
+
+
 def weather_emoji(weather):
+    """
+    Gets color and emoji for weather display.
+    """
+
     if weather == python_weather.enums.Kind.CLOUDY:
-        return f"{weather} "
+        return [weather, "", "light_grey"]
     elif weather == python_weather.enums.Kind.FOG:
-        return f"{weather} 󰖑"
+        return [weather, "󰖑", "light_grey"]
     elif weather == python_weather.enums.Kind.HEAVY_RAIN:
-        return f"{weather} "
+        return [weather, "", "blue"]
     elif weather == python_weather.enums.Kind.HEAVY_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "blue"]
     elif weather == python_weather.enums.Kind.HEAVY_SNOW:
-        return f"{weather} 󰖘"
+        return [weather, "󰖘", "blue"]
     elif weather == python_weather.enums.Kind.HEAVY_SNOW_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "blue"]
     elif weather == python_weather.enums.Kind.LIGHT_RAIN:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.LIGHT_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.LIGHT_SLEET:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.LIGHT_SLEET_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.LIGHT_SNOW:
-        return f"{weather} 󰖘"
+        return [weather, "󰖘", "cyan"]
     elif weather == python_weather.enums.Kind.LIGHT_SNOW_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.PARTLY_CLOUDY:
-        return f"{weather} "
+        return [weather, "", "light_grey"]
     elif weather == python_weather.enums.Kind.SUNNY:
-        return f"{weather} "
+        return [weather, "", "yellow"]
     elif weather == python_weather.enums.Kind.THUNDERY_HEAVY_RAIN:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.THUNDERY_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.THUNDERY_SNOW_SHOWERS:
-        return f"{weather} "
+        return [weather, "", "cyan"]
     elif weather == python_weather.enums.Kind.VERY_CLOUDY:
-        return f"{weather} "
+        return [weather, "", "light_grey"]
     else:
         return weather
 
 
 async def weather(location="Delhi"):
     async with python_weather.Client() as client:
-        # fetch a weather forecast from a city
+        # Fetch a weather forecast from a city
         weather = await client.get(location)
 
+        # Get all the reqd info
         n = True
         for daily in weather.daily_forecasts:
             while n:
                 temp = weather.temperature
-                feel = weather.feels_like
+                # feel = weather.feels_like
 
                 humidity = weather.humidity
                 prec = weather.precipitation
@@ -71,22 +95,53 @@ async def weather(location="Delhi"):
                 kind = weather.kind
                 n = False
 
-        print(f"""{colored("[Orca]:", "red")} {colored("Here's today's forecast sir:", "green")}
 
-{colored(f"Temperature: {temp}󰔄 Feels like {feel}󰔄", "yellow")}
-{colored(f"Day max:      {day_max}󰔄", "red")}
-{colored(f"Day min:      {day_min}󰔄", "blue")}
+        # Color the stuff and find lengths
+        temp_color = get_temp_color(temp)
+        temp_len = len(f" {temp}󰔄")
+        temp = colored(f" {temp}󰔄", temp_color)
+        day_max_len = len(f"󰸂 {day_max}󰔄")
+        day_max = colored(f"󰸃 {day_max}󰔄", "red")
+        day_min_len = len(f"󰸂 {day_min}󰔄")
+        day_min = colored(f"󰸂 {day_min}󰔄", "blue")
+        weather_show = colored(f"{weather.kind} {weather_emoji(kind)[1]}", weather_emoji(kind)[2])
+        weather_len = len(f"{weather.kind} {weather_emoji(kind)[1]}")
+        humidity_len = len(f" {humidity}%")
+        humidity = colored(f" {humidity}%", "green")
+        precep_len = len(f"  {prec}mm")
+        precep = colored(f"  {prec}mm", "blue")
+        wind_speed = colored(f" {weather.wind_speed}km/h", "cyan")
+        wind_len = len(f" {weather.wind_speed}km/h")
+        moon_phase = colored(moon_emoji(phase), "yellow")
+        moon_len = len(moon_emoji(phase))
 
-{colored(f"Humidity:     {humidity}%", "green")}
-{colored(f"Precipitaion: {prec}mm", "blue")}
 
-{colored(f"Moon:     {moon_emoji(phase)}", "yellow")}
-{colored(f"Weather:  {weather_emoji(kind)}", "blue")}
+        # Bar lengths for bars and spaces
+        if weather_len > moon_len:
+            bar_len = weather_len
+        else:
+            bar_len = moon_len
+
+        if day_min_len > wind_len:
+            short_bar_len = day_min_len
+        else:
+            short_bar_len = wind_len
+
+
+        #Finally, print the stufff
+        print(f"""
+╭{"─"*short_bar_len}──┬{"─"*bar_len}────╮
+│ {temp} {" "*(short_bar_len - temp_len)}│ {weather_show}   {" "*(bar_len - weather_len)}│
+│ {day_max} {" "*(short_bar_len - day_max_len)}│ {humidity}   {" "*(bar_len - humidity_len)}│
+│ {day_min} {" "*(short_bar_len - day_min_len)}│ {precep}   {" "*(bar_len - precep_len)}│
+│ {wind_speed} {" "*(short_bar_len - wind_len)}│ {moon_phase}   {" "*(bar_len - moon_len)}│
+╰{"─"*short_bar_len}──┴{"─"*bar_len}────╯
 """)
 
 
 if __name__ == '__main__':
 
+    # argparse stuff
     parser = argparse.ArgumentParser(description="Get weather information for a specific location.")
     parser.add_argument("location", nargs="?", help="The desired location (optional)")
     args = parser.parse_args()
@@ -97,4 +152,5 @@ if __name__ == '__main__':
     if os.name == 'nt':
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
+    # Running the thing
     asyncio.run(weather(location=args.location))
