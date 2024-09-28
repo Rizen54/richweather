@@ -130,13 +130,13 @@ async def weather(location="Delhi"):
 
         #Finally, print the stufff
         print(f"""
-╭{"─"*short_bar_len}──┬{"─"*bar_len}────╮
-│ {temp} {" "*(short_bar_len - temp_len)}│ {weather_show}   {" "*(bar_len - weather_len)}│
-│ {day_max} {" "*(short_bar_len - day_max_len)}│ {humidity}   {" "*(bar_len - humidity_len)}│
-│ {day_min} {" "*(short_bar_len - day_min_len)}│ {precep}   {" "*(bar_len - precep_len)}│
-│ {wind_speed} {" "*(short_bar_len - wind_len)}│ {moon_phase}   {" "*(bar_len - moon_len)}│
-╰{"─"*short_bar_len}──┴{"─"*bar_len}────╯
-""")
+  ╭{"─"*short_bar_len}──┬{"─"*bar_len}────╮
+  │ {temp} {" "*(short_bar_len - temp_len)}│ {weather_show}   {" "*(bar_len - weather_len)}│
+  │ {day_max} {" "*(short_bar_len - day_max_len)}│ {humidity}   {" "*(bar_len - humidity_len)}│
+  │ {day_min} {" "*(short_bar_len - day_min_len)}│ {precep}   {" "*(bar_len - precep_len)}│
+  │ {wind_speed} {" "*(short_bar_len - wind_len)}│ {moon_phase}   {" "*(bar_len - moon_len)}│
+  ╰{"─"*short_bar_len}──┴{"─"*bar_len}────╯
+        """)
 
 
 if __name__ == '__main__':
