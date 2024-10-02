@@ -139,8 +139,7 @@ async def weather(location="Delhi"):
         """)
 
 
-if __name__ == '__main__':
-
+def main():
     # argparse stuff
     parser = argparse.ArgumentParser(description="Get weather information for a specific location.")
     parser.add_argument("location", nargs="?", help="The desired location (optional)")
