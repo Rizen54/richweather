@@ -2,7 +2,7 @@
 <h1>richweather</h1>
 
 > A Python-based command-line application that provides real-time weather information.
-
+<img src="Images/sample.png" alt="Sample Image" width="300">
 </div>
 
 ## Usage:
