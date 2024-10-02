@@ -31,16 +31,7 @@ For example: New York can be written as: `New_York new_york NEw_yOrK "New york" 
 ```bash
 git clone https://github.com/Rizen54/richweather
 cd richweather/
-python3 -m pip install -r requirements.txt
-chmod +x richweather.py
-sudo cp richweather.py /usr/local/bin/richweather
-alias richweather='python3 /usr/local/bin/richweather'
-```
-
-Lastly, add this line to the end of your `.bashrc` or `.zshrc`:
-
-```bash
-alias richweather='python3 /usr/local/bin/richweather'
+pip install .
 ```
 
 ## Stars
