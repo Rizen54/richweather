@@ -144,6 +144,7 @@ if __name__ == '__main__':
     # argparse stuff
     parser = argparse.ArgumentParser(description="Get weather information for a specific location.")
     parser.add_argument("location", nargs="?", help="The desired location (optional)")
+
     args = parser.parse_args()
 
     # see https://stackoverflow.com/questions/45600579/asyncio-event-loop-is-closed-when-getting-loop
@@ -153,4 +154,7 @@ if __name__ == '__main__':
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
     # Running the thing
-    asyncio.run(weather(location=args.location))
+    try:
+        asyncio.run(weather(location=args.location))
+    except python_weather.errors.Error:
+        print(colored("Please enter a cityname in this format: richweather <city>", "red"))
