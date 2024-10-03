@@ -43,6 +43,10 @@ Lastly, add this line to the end of your `.bashrc` or `.zshrc`:
 alias richweather='python3 /usr/local/bin/richweather'
 ```
 
+## Socials
+You can checkout my socials at my profile repo.
+💬 My Discord server if you're interested in my projs: [Rizen's Server](https://discord.gg/BSCkxtxNJ6)
+
 ## Stars
 Please support me by giving a star to this repo.
 > Small click for a man, giant star for another.
