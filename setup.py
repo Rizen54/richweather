@@ -9,12 +9,13 @@ for line in open('requirements.txt').readlines():
     if req.startswith('#') or req == '':
         continue
     requirements.append(req)
+
     
 setuptools.setup(
     name="richweather",
     version="0.1.0",
-    author="Laryy The Cow",
-    author_email="larry@gentoo.org",
+    author="Rizen54 (Satvik)",
+    author_email="psatvik54@proton.me",
     description="A Python-based command-line application that provides real-time weather information.",
     long_description=long_description,
     long_description_content_type="text/markdown",
