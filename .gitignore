@@ -1,1 +1,5 @@
 venv/
+richweather.egg-info/
+build/
+dist/
+README.tmp.md
