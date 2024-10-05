@@ -157,3 +157,6 @@ def main():
         asyncio.run(weather(location=args.location))
     except python_weather.errors.Error:
         print(colored("Please enter a cityname in this format: richweather <city>", "red"))
+
+if __name__ == "__main__":
+    main()
