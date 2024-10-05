@@ -24,7 +24,9 @@ def read_config():
                 "humidity",
                 "precipitation",
                 "wind_speed",
-                "moon_phase"
+                "moon_phase",
+                "day_max",
+                "day_min"
             ]
         }
 
@@ -112,44 +114,65 @@ async def weather(location, element_order):
                 wind_speed = weather_data.wind_speed
                 n = False
 
+        # Color the elements and calculate lengths
+        temp_color = get_temp_color(temp)
+        temp_len = len(f" {temp}󰔀")
+        temp = colored(f" {temp}󰔀", temp_color)
+        
+        day_max_len = len(f"󰸂 {day_max}󰔀")
+        day_max = colored(f"󰸃 {day_max}󰔀", "red")
+        
+        day_min_len = len(f"󰸂 {day_min}󰔀")
+        day_min = colored(f"󰸂 {day_min}󰔀", "blue")
+        
+        weather_show = colored(f"{weather_data.kind} {weather_emoji(kind)[1]}", weather_emoji(kind)[2])
+        weather_len = len(f"{weather_data.kind} {weather_emoji(kind)[1]}")
+        
+        humidity_len = len(f" {humidity}%")
+        humidity = colored(f" {humidity}%", "green")
+        
+        precep_len = len(f"  {prec}mm")
+        precep = colored(f"  {prec}mm", "blue")
+        
+        wind_speed = colored(f" {wind_speed}km/h", "cyan")
+        wind_len = len(f" {wind_speed}km/h")
+        
+        moon_phase = colored(moon_emoji(phase), "yellow")
+        moon_len = len(moon_emoji(phase))
+        
+        max_length = max(
+            temp_len,
+            day_max_len,
+            day_min_len,
+            weather_len,
+            humidity_len,
+            precep_len,
+            wind_len,
+            moon_len
+        )
+        bar_len = max_length + 2
+        short_bar_len = max(day_min_len, wind_len)
+
         # Create a dictionary with all elements
         elements = {
-            "temperature": f" {temp}󰔄",
-            "weather": f"{weather_data.kind} {weather_emoji(kind)[1]}",
-            "humidity": f" {humidity}%",
-            "precipitation": f"  {prec}mm",
-            "wind_speed": f" {wind_speed}km/h",
-            "moon_phase": moon_emoji(phase)
+            "temperature": temp,
+            "weather": weather_show,
+            "humidity": humidity,
+            "precipitation": precep,
+            "wind_speed": wind_speed,
+            "moon_phase": moon_phase,
+            "day_max": day_max,
+            "day_min": day_min
         }
-
-        # Color the elements
-        colored_elements = {}
-        for elem, value in elements.items():
-            if elem == "temperature":
-                color = get_temp_color(temp)
-            elif elem == "weather":
-                color = weather_emoji(kind)[2]
-            elif elem == "humidity":
-                color = "green"
-            elif elem == "precipitation":
-                color = "blue"
-            elif elem == "wind_speed":
-                color = "cyan"
-            elif elem == "moon_phase":
-                color = "yellow"
-            colored_elements[elem] = colored(value, color)
-
-        # Determine bar lengths
-        max_len = max(len(colored_elements[elem]) for elem in element_order)
-        short_bar_len = len(f"{colored_elements['temperature']} {' '*(max_len - len(colored_elements['temperature']))}")
 
         # Print the weather info
         print(f"""
-  ╭{"─"*short_bar_len}──┬{"─"*max_len}───╮
-  │ {colored_elements[element_order[0]]} {" "*(short_bar_len - len(colored_elements[element_order[0]]))}│ {colored_elements[element_order[1]]}  {" "*(max_len - len(colored_elements[element_order[1]]))}│
-  │ {colored_elements[element_order[2]]} {" "*(short_bar_len - len(colored_elements[element_order[2]]))}│ {colored_elements[element_order[3]]}  {" "*(max_len - len(colored_elements[element_order[3]]))}│
-  │ {colored_elements[element_order[4]]} {" "*(short_bar_len - len(colored_elements[element_order[4]]))}│ {colored_elements[element_order[5]]}  {" "*(max_len - len(colored_elements[element_order[5]]))}│
-  ╰{"─"*short_bar_len}──┴{"─"*max_len}───╯
+        ╭{"─"*short_bar_len}──┬{"─"*bar_len}───╮
+        │ {elements[element_order[0]]} {" "*(short_bar_len - len(elements[element_order[0]]))}│ {elements[element_order[1]]}  {" "*(bar_len - len(elements[element_order[1]]))}│
+        │ {elements[element_order[2]]} {" "*(short_bar_len - len(elements[element_order[2]]))}│ {elements[element_order[3]]}  {" "*(bar_len - len(elements[element_order[3]]))}│
+        │ {elements[element_order[4]]} {" "*(short_bar_len - len(elements[element_order[4]]))}│ {elements[element_order[5]]}  {" "*(bar_len - len(elements[element_order[5]]))}│
+        │ {elements[element_order[6]]} {" "*(short_bar_len - len(elements[element_order[6]]))}│ {elements[element_order[7]]}  {" "*(bar_len - len(elements[element_order[7]]))}│
+        ╰{"─"*short_bar_len}──┴{"─"*bar_len}───╯
         """)
 
 
