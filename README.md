@@ -40,7 +40,7 @@ You can checkout my socials at my profile repo.
 
 ## Stars
 Please support me by giving a star to this repo.
-> Small click for a man, giant star for another.
+> Small click for a person, giant star for another.
 
 ## Where does richweather get its data from?
 Since richweather uses the python-weather module it gets the data from [World Weather Online API](https://www.worldweatheronline.com)
