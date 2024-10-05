@@ -159,22 +159,25 @@ async def weather(location, element_order):
 
         left_side_elements = [colored_elements[element_order[i]] for i in range(0, 4)]
         right_side_elements = [colored_elements[element_order[i]] for i in range(4, 8)]
-        max_left_side = max(lengths[element_order[i]] for i in range(0, 4)) + 2
-        max_right_side = max(lengths[element_order[i]] for i in range(4, 8)) + 2
 
+        max_left_side = 19
+        max_right_side = 25
+        
 
         print(max_right_side)
         print(max_left_side)
         max_width = max(max_left_side, max_right_side) + 10
         print(max_width)
         #If it works it works, please dont touch this unless you know what you are doing
+        #This is really hacky and static because max_left_side and max_right side arent calculated dynamically because doing so is a big pain.
+        #To be fair, they were pretty hacky and static before
         print(f"""
-        ╭{"─"*(max_left_side)}{"─"*(max_right_side)}╮
-        | {left_side_elements[0].ljust(max_left_side)}│{right_side_elements[0].ljust(max_width)}|
-        | {left_side_elements[1].ljust(max_left_side)}│{right_side_elements[1].ljust(max_width)}|
-        | {left_side_elements[2].ljust(max_left_side)}│{right_side_elements[2].ljust(max_width)}|
-        | {left_side_elements[3].ljust(max_left_side)}│{right_side_elements[3].ljust(max_width)}|
-        ╰{"─"*(max_left_side)}{"─"*(max_right_side)}╯
+        ╭{"─"*(max_left_side)}────────┬{"─"*(max_right_side)}─╮
+        │ {left_side_elements[0].ljust(max_width)}│{right_side_elements[0].ljust(max_width)}│
+        │ {left_side_elements[1].ljust(max_width)}│{right_side_elements[1].ljust(max_width)}│
+        │ {left_side_elements[2].ljust(max_width)}│{right_side_elements[2].ljust(max_width)}│
+        │ {left_side_elements[3].ljust(max_width)}│{right_side_elements[3].ljust(max_width)}│
+        ╰{"─"*(max_left_side)}────────┴{"─"*(max_right_side)}─╯
         """)
 
 
