@@ -4,7 +4,7 @@ import python_weather
 from termcolor import colored
 import asyncio
 import os
-
+import yaml
 # Declare Moon Phases
 phases = [phase for phase in python_weather.enums.Phase]
 emojis = ["", "", "", "", "", "", "", ""]
@@ -22,8 +22,8 @@ def read_config():
                 "temperature",
                 "weather",
                 "humidity",
-                "precipitation",
                 "wind_speed",
+                "precipitation",
                 "moon_phase",
                 "day_max",
                 "day_min"
@@ -94,67 +94,58 @@ def weather_emoji(weather):
     else:
         return weather
 
-
 async def weather(location, element_order):
     async with python_weather.Client() as client:
         # Fetch a weather forecast from a city
-        weather_data = await client.get(location)
+        weather = await client.get(location)
 
         # Get all the required info
         n = True
-        for daily in weather_data.daily_forecasts:
+        for daily in weather.daily_forecasts:
             while n:
-                temp = weather_data.temperature
-                humidity = weather_data.humidity
-                prec = weather_data.precipitation
+                temp = weather.temperature
+                humidity = weather.humidity
+                prec = weather.precipitation
                 day_max = daily.highest_temperature
                 day_min = daily.lowest_temperature
                 phase = daily.moon_phase
-                kind = weather_data.kind
-                wind_speed = weather_data.wind_speed
+                kind = weather.kind
+                wind_speed = weather.wind_speed
                 n = False
 
-        # Color the elements and calculate lengths
+        # Color the stuff and find lengths
         temp_color = get_temp_color(temp)
         temp_len = len(f" {temp}󰔀")
         temp = colored(f" {temp}󰔀", temp_color)
-        
         day_max_len = len(f"󰸂 {day_max}󰔀")
         day_max = colored(f"󰸃 {day_max}󰔀", "red")
-        
         day_min_len = len(f"󰸂 {day_min}󰔀")
         day_min = colored(f"󰸂 {day_min}󰔀", "blue")
-        
-        weather_show = colored(f"{weather_data.kind} {weather_emoji(kind)[1]}", weather_emoji(kind)[2])
-        weather_len = len(f"{weather_data.kind} {weather_emoji(kind)[1]}")
-        
+        weather_show = colored(f"{weather.kind} {weather_emoji(kind)[1]}", weather_emoji(kind)[2])
+        weather_len = len(f"{weather.kind} {weather_emoji(kind)[1]}")
         humidity_len = len(f" {humidity}%")
         humidity = colored(f" {humidity}%", "green")
-        
         precep_len = len(f"  {prec}mm")
         precep = colored(f"  {prec}mm", "blue")
-        
         wind_speed = colored(f" {wind_speed}km/h", "cyan")
         wind_len = len(f" {wind_speed}km/h")
-        
         moon_phase = colored(moon_emoji(phase), "yellow")
         moon_len = len(moon_emoji(phase))
-        
-        max_length = max(
-            temp_len,
-            day_max_len,
-            day_min_len,
-            weather_len,
-            humidity_len,
-            precep_len,
-            wind_len,
-            moon_len
-        )
-        bar_len = max_length + 2
-        short_bar_len = max(day_min_len, wind_len)
+
+        # Bar lengths for bars and spaces
+        lengths = {
+            "temperature": temp_len,
+            "weather": weather_len,
+            "humidity": humidity_len,
+            "precipitation": precep_len,
+            "wind_speed": wind_len,
+            "moon_phase": moon_len,
+            "day_max": day_max_len,
+            "day_min": day_min_len
+        }
 
         # Create a dictionary with all elements
-        elements = {
+        colored_elements = {
             "temperature": temp,
             "weather": weather_show,
             "humidity": humidity,
@@ -165,16 +156,24 @@ async def weather(location, element_order):
             "day_min": day_min
         }
 
-        # Print the weather info
-        print(f"""
-        ╭{"─"*short_bar_len}──┬{"─"*bar_len}───╮
-        │ {elements[element_order[0]]} {" "*(short_bar_len - len(elements[element_order[0]]))}│ {elements[element_order[1]]}  {" "*(bar_len - len(elements[element_order[1]]))}│
-        │ {elements[element_order[2]]} {" "*(short_bar_len - len(elements[element_order[2]]))}│ {elements[element_order[3]]}  {" "*(bar_len - len(elements[element_order[3]]))}│
-        │ {elements[element_order[4]]} {" "*(short_bar_len - len(elements[element_order[4]]))}│ {elements[element_order[5]]}  {" "*(bar_len - len(elements[element_order[5]]))}│
-        │ {elements[element_order[6]]} {" "*(short_bar_len - len(elements[element_order[6]]))}│ {elements[element_order[7]]}  {" "*(bar_len - len(elements[element_order[7]]))}│
-        ╰{"─"*short_bar_len}──┴{"─"*bar_len}───╯
-        """)
+        # Calculate max values for each side based on element_order
 
+
+        left_side_elements = [colored_elements[element_order[i]] for i in range(0, 4)]
+        right_side_elements = [colored_elements[element_order[i]] for i in range(4, 8)]
+
+        max_left_side = max(len(element) for element in left_side_elements)
+        max_right_side = max(len(element) for element in right_side_elements)
+        max_width = max(len(str(element)) for element in colored_elements.values())
+        #If it works it works, please dont touch this unless you know what you are doing
+        print(f"""
+        ╭{"─"*(max_left_side)}─┬{"─"*(max_right_side)}╮
+        │ {left_side_elements[0].ljust(max_width)}│ {right_side_elements[0].ljust(max_width)}        │
+        │ {left_side_elements[1].ljust(max_width)}│ {right_side_elements[1].ljust(max_width)}        │
+        │ {left_side_elements[2].ljust(max_width)}│ {right_side_elements[2].ljust(max_width)}        │
+        │ {left_side_elements[3].ljust(max_width)}│ {right_side_elements[3].ljust(max_width)}        │
+        ╰{"─"*(max_left_side)}─┴{"─"*(max_right_side)}╯
+        """)
 
 
 def main():
