@@ -2,8 +2,6 @@
 import argparse
 import asyncio
 import os
-
-import grapheme
 import python_weather
 from termcolor import colored
 import yaml
@@ -16,7 +14,6 @@ emojis = ["", "", "", "", "", "", "", ""]
 
 def read_config():
     config_path = os.path.expanduser("~/.config/richweather/richweather.yaml")
-    
     try:
         with open(config_path, 'r') as stream:
             return yaml.safe_load(stream)
@@ -51,7 +48,7 @@ def get_temp_color(temp):
     if temp <= 28:
         return "blue"
     elif 28 < temp <= 30:
-       return "yellow"
+        return "yellow"
     else:
         return "red"
 
@@ -134,14 +131,10 @@ async def weather(location, element_order):
         humidity = colored(f" {humidity}%", "green")
         precep_len = len(f"  {prec}mm")
         precep = colored(f"  {prec}mm", "blue")
-        # print(wind_speed)
-        wind_len = len(str(wind_speed)) + 6 #Calculating the lengths of this one is really weird for some reason because of the colors and emojis and stuff.
+        wind_len = len(str(wind_speed)) + 6   # Calculating the lengths of this one is really weird for some reason because of the colors and emojis and stuff.
         wind_speed = colored(f" {wind_speed}km/h", "cyan")
         moon_phase = colored(moon_emoji(phase), "yellow")
         moon_len = len(moon_emoji(phase))
-        # print(wind_len)
-        
-        # Bar lengths for bars and spaces
         lengths = {
             "temperature": temp_len,
             "weather": weather_len,
@@ -152,7 +145,6 @@ async def weather(location, element_order):
             "day_max": day_max_len,
             "day_min": day_min_len
         }
-        
         # Create a dictionary with all elements
         colored_elements = {
             "temperature": temp,
@@ -164,19 +156,13 @@ async def weather(location, element_order):
             "day_max": day_max,
             "day_min": day_min
         }
-        
         # Calculate max values for each side based on element_order
         left_side_elements = [colored_elements[element_order[i]] for i in range(0, 4)]
         right_side_elements = [colored_elements[element_order[i]] for i in range(4, 8)]
-
         max_left_side = max(lengths[element_order[i]] for i in range(0, 4))
-        max_right_side = max(lengths[element_order[i]] for i in range(4, 8)) 
-
-
-        # print(max_right_side)
-        # print(max_left_side)
-        #If it works it works, please dont touch this unless you know what you are doing
-        #This is really hacky and static because max_left_side and max_right side arent calculated dynamically because doing so is a big pain.
+        max_right_side = max(lengths[element_order[i]] for i in range(4, 8))
+        # If it works it works, please dont touch this unless you know what you are doing
+        # The sides are dynamic now
         print(f"""
   ╭─{"─"*(max_left_side)}──┬{"─"*(max_right_side)}───╮
   │ {left_side_elements[0]} {" "*((max_left_side - lengths[element_order[0]]))} │ {right_side_elements[0]} {" "*((max_right_side - lengths[element_order[4]]))} │
@@ -188,22 +174,17 @@ async def weather(location, element_order):
 
 
 def main():
-    
     config = read_config()
     # argparse stuff
     parser = argparse.ArgumentParser(description="Get weather information for a specific location.")
     parser.add_argument("location", nargs="?", help="The desired location (optional)")
-
     args = parser.parse_args()
-    
     if not args.location:
         args.location = config["default_city"]
     # see https://stackoverflow.com/questions/45600579/asyncio-event-loop-is-closed-when-getting-loop
     # for more details
-
     if os.name == 'nt':
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
     # Running the thing
     try:
         asyncio.run(weather(args.location, config["element_order"]))
