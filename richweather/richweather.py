@@ -134,12 +134,12 @@ async def weather(location, element_order):
         humidity = colored(f" {humidity}%", "green")
         precep_len = len(f"  {prec}mm")
         precep = colored(f"  {prec}mm", "blue")
-        print(wind_speed)
-        wind_len = len(str(wind_speed)) + 6 #Calculating the lengths of this one is really weird for some reason because of the colors and emojis and stuff so i just did this, it works
+        # print(wind_speed)
+        wind_len = len(str(wind_speed)) + 6 #Calculating the lengths of this one is really weird for some reason because of the colors and emojis and stuff.
         wind_speed = colored(f" {wind_speed}km/h", "cyan")
         moon_phase = colored(moon_emoji(phase), "yellow")
         moon_len = len(moon_emoji(phase))
-        print(wind_len)
+        # print(wind_len)
         
         # Bar lengths for bars and spaces
         lengths = {
@@ -173,11 +173,10 @@ async def weather(location, element_order):
         max_right_side = max(lengths[element_order[i]] for i in range(4, 8)) 
 
 
-        print(max_right_side)
-        print(max_left_side)
+        # print(max_right_side)
+        # print(max_left_side)
         #If it works it works, please dont touch this unless you know what you are doing
         #This is really hacky and static because max_left_side and max_right side arent calculated dynamically because doing so is a big pain.
-        #To be fair, they were pretty hacky and static before
         print(f"""
   ╭─{"─"*(max_left_side)}──┬{"─"*(max_right_side)}───╮
   │ {left_side_elements[0]} {" "*((max_left_side - lengths[element_order[0]]))} │ {right_side_elements[0]} {" "*((max_right_side - lengths[element_order[4]]))} │
