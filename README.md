@@ -32,6 +32,29 @@ For example: New York can be written as: `New_York new_york NEw_yOrK "New york" 
 git clone https://github.com/Rizen54/richweather
 cd richweather/
 pip install .
+mkdir ~/.config/richweather/
+cp richweather.yaml ~/.config/richweather/
+```
+
+## Configuring
+Richweather is configured with a YAML config file in
+```
+~/.config/richweather/richweather.yaml
+```
+
+### Example Config
+This config sets the default city to Ottawa and displays the elements in a weird order. Please note that the first 4 elements are in the left panel and after the 4th element, the next 4 elements are displayed in the right panel.
+```yaml
+default_city: Ottawa
+element_order:
+  - moon_phase
+  - humidity
+  - weather
+  - wind_speed
+  - precipitation
+  - temperature
+  - day_max
+  - day_min
 ```
 
 ## Socials
