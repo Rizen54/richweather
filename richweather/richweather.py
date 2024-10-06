@@ -21,13 +21,13 @@ def read_config():
             "default_city": "Ottawa",
             "element_order": [
                 "temperature",
+                "day_max",
+                "day_min",
+                "wind_speed",
                 "weather",
                 "humidity",
-                "wind_speed",
                 "precipitation",
-                "moon_phase",
-                "day_max",
-                "day_min"
+                "moon_phase"
             ]
         }
 
