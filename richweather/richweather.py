@@ -5,6 +5,7 @@ from termcolor import colored
 import asyncio
 import os
 import yaml
+import grapheme
 # Declare Moon Phases
 phases = [phase for phase in python_weather.enums.Phase]
 emojis = ["", "", "", "", "", "", "", ""]
@@ -127,11 +128,12 @@ async def weather(location, element_order):
         humidity = colored(f" {humidity}%", "green")
         precep_len = len(f"  {prec}mm")
         precep = colored(f"  {prec}mm", "blue")
+        print(wind_speed)
+        wind_len = len(str(wind_speed)) + 6 #Calculating the lengths of this one is really weird for some reason because of the colors and emojis and stuff so i just did this, it works
         wind_speed = colored(f" {wind_speed}km/h", "cyan")
-        wind_len = len(f" {wind_speed}km/h")
         moon_phase = colored(moon_emoji(phase), "yellow")
         moon_len = len(moon_emoji(phase))
-
+        print(wind_len)
         # Bar lengths for bars and spaces
         lengths = {
             "temperature": temp_len,
@@ -143,7 +145,6 @@ async def weather(location, element_order):
             "day_max": day_max_len,
             "day_min": day_min_len
         }
-
         # Create a dictionary with all elements
         colored_elements = {
             "temperature": temp,
@@ -160,24 +161,25 @@ async def weather(location, element_order):
         left_side_elements = [colored_elements[element_order[i]] for i in range(0, 4)]
         right_side_elements = [colored_elements[element_order[i]] for i in range(4, 8)]
 
-        max_left_side = 19
-        max_right_side = 25
-        
+        max_left_side = max(lengths[element_order[i]] for i in range(0, 4))
+        max_right_side = max(lengths[element_order[i]] for i in range(4, 8)) 
+
+
+
+
 
         print(max_right_side)
         print(max_left_side)
-        max_width = max(max_left_side, max_right_side) + 10
-        print(max_width)
         #If it works it works, please dont touch this unless you know what you are doing
         #This is really hacky and static because max_left_side and max_right side arent calculated dynamically because doing so is a big pain.
         #To be fair, they were pretty hacky and static before
         print(f"""
-        ╭{"─"*(max_left_side)}────────┬{"─"*(max_right_side)}─╮
-        │ {left_side_elements[0].ljust(max_width)}│{right_side_elements[0].ljust(max_width)}│
-        │ {left_side_elements[1].ljust(max_width)}│{right_side_elements[1].ljust(max_width)}│
-        │ {left_side_elements[2].ljust(max_width)}│{right_side_elements[2].ljust(max_width)}│
-        │ {left_side_elements[3].ljust(max_width)}│{right_side_elements[3].ljust(max_width)}│
-        ╰{"─"*(max_left_side)}────────┴{"─"*(max_right_side)}─╯
+        ╭{"─"*(max_left_side)}─┬{"─"*(max_right_side)}─╮
+        │ {left_side_elements[0]}{" "*((max_left_side - lengths[element_order[0]]))}│{right_side_elements[0]}{" "*((max_right_side - lengths[element_order[4]]))} │
+        │ {left_side_elements[1]}{" "*((max_left_side - lengths[element_order[1]]))}│{right_side_elements[1]}{" "*((max_right_side - lengths[element_order[5]]))} │
+        │ {left_side_elements[2]}{" "*((max_left_side - lengths[element_order[2]]))}│{right_side_elements[2]}{" "*((max_right_side - lengths[element_order[6]]))} │
+        │ {left_side_elements[3]}{" "*((max_left_side - lengths[element_order[3]]))}│{right_side_elements[3]}{" "*((max_right_side - lengths[element_order[7]]))} │
+        ╰{"─"*(max_left_side)}─┴{"─"*(max_right_side)}─╯
         """)
 
 
