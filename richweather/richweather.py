@@ -10,7 +10,7 @@ import grapheme
 phases = [phase for phase in python_weather.enums.Phase]
 emojis = ["", "", "", "", "", "", "", ""]
 def read_config():
-    config_path = os.path.expanduser("~/.config/richweather.yaml")
+    config_path = os.path.expanduser("~/.config/richweather/richweather.yaml")
     
     try:
         with open(config_path, 'r') as stream:
