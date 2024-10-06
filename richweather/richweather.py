@@ -2,6 +2,7 @@
 import argparse
 import asyncio
 import os
+
 import python_weather
 from termcolor import colored
 import yaml
