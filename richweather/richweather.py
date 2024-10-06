@@ -174,12 +174,12 @@ async def weather(location, element_order):
         #This is really hacky and static because max_left_side and max_right side arent calculated dynamically because doing so is a big pain.
         #To be fair, they were pretty hacky and static before
         print(f"""
-        ╭{"─"*(max_left_side)}─┬{"─"*(max_right_side)}─╮
-        │ {left_side_elements[0]}{" "*((max_left_side - lengths[element_order[0]]))}│{right_side_elements[0]}{" "*((max_right_side - lengths[element_order[4]]))} │
-        │ {left_side_elements[1]}{" "*((max_left_side - lengths[element_order[1]]))}│{right_side_elements[1]}{" "*((max_right_side - lengths[element_order[5]]))} │
-        │ {left_side_elements[2]}{" "*((max_left_side - lengths[element_order[2]]))}│{right_side_elements[2]}{" "*((max_right_side - lengths[element_order[6]]))} │
-        │ {left_side_elements[3]}{" "*((max_left_side - lengths[element_order[3]]))}│{right_side_elements[3]}{" "*((max_right_side - lengths[element_order[7]]))} │
-        ╰{"─"*(max_left_side)}─┴{"─"*(max_right_side)}─╯
+  ╭─{"─"*(max_left_side)}──┬{"─"*(max_right_side)}───╮
+  │ {left_side_elements[0]} {" "*((max_left_side - lengths[element_order[0]]))} │ {right_side_elements[0]} {" "*((max_right_side - lengths[element_order[4]]))} │
+  │ {left_side_elements[1]} {" "*((max_left_side - lengths[element_order[1]]))} │ {right_side_elements[1]} {" "*((max_right_side - lengths[element_order[5]]))} │
+  │ {left_side_elements[2]} {" "*((max_left_side - lengths[element_order[2]]))} │ {right_side_elements[2]} {" "*((max_right_side - lengths[element_order[6]]))} │
+  │ {left_side_elements[3]} {" "*((max_left_side - lengths[element_order[3]]))} │ {right_side_elements[3]} {" "*((max_right_side - lengths[element_order[7]]))} │
+  ╰─{"─"*(max_left_side)}──┴{"─"*(max_right_side)}───╯
         """)
 
 
