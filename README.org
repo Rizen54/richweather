@@ -1,0 +1,70 @@
+#+HTML: <div align="center">
+#+HTML: <h1>Richweather</h1>
+#+HTML: <p>A Python-based command-line application that provides real-time weather information.</p>
+#+HTML: <img src="Images/sample.png" alt="Sample Image" width="300">
+#+HTML: </div>
+#+OPTIONS: toc:nil
+** Usage:
+It is as simple as writing
+#+BEGIN_SRC sh
+richweather <city-name>`
+#+END_SRC
+Or just
+#+BEGIN_SRC sh
+  richweather
+#+END_SRC
+If you want to use the config file or the default config. 
+Please note that the city name is not case sensitive and there are many ways you can enter it.
+For example: New York can be written as:
+#+BEGIN_EXAMPLE
+New_York new_york NEw_yOrK "New york" NY
+#+END_EXAMPLE
+** Capabilities
+Richweather can display the following info
+- Temperature
+- Day's max temp
+- Wind speed
+- Weather
+- Humidity *(in %age)*
+- Precipitation *(in mm)*
+- Moon phase.\\
+*richweather* uses *[[https://nerdfonts.com][nerdfonts]]* to display the symbols. I use Jetbrains Mono NerdFont so I know it works. You can test with diffirent nerd fonts.
+** Configuring
+
+Richweather is configured with a YAML config file in
+#+BEGIN_SRC sh
+~/.config/richweather/config
+#+END_SRC
+
+*** Example Config
+This config sets the default city to Ottawa and displays the elements in a weird order.
+#+BEGIN_SRC yaml
+default_city: Ottawa
+element_order:
+  - moon_phase
+  - humidity
+  - weather
+  - wind_speed
+  - precipitation
+  - temperature
+  - day_max
+  - day_min
+
+#+END_SRC
+
+** Installation
+#+BEGIN_SRC sh
+  git clone https://github.com/Rizen54/richweather
+  cd richweather/
+  pip install .
+#+END_SRC
+** Socials
+You can checkout my socials at my profile repo.\\
+💬 My Discord server if you're interested in my projs: [[https://discord.gg/BSCktxtxNJ6][Rizen's Server]]
+** Stars
+Please support me by giving a star to this repo.
+#+BEGIN_QUOTE
+Small click for a person, giant start for another.
+#+END_QUOTE
+** Where does richweather get its data from?
+Since richweather uses the python-weather module, it gets the data  from [[https://www.worldweatheronline.com][World Weather Online API]]
