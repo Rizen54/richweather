@@ -1,14 +1,19 @@
 #!/usr/bin/env python
 import argparse
-import python_weather
-from termcolor import colored
 import asyncio
 import os
-import yaml
+
 import grapheme
+import python_weather
+from termcolor import colored
+import yaml
+
+
 # Declare Moon Phases
 phases = [phase for phase in python_weather.enums.Phase]
 emojis = ["", "", "", "", "", "", "", ""]
+
+
 def read_config():
     config_path = os.path.expanduser("~/.config/richweather/richweather.yaml")
     
@@ -95,6 +100,7 @@ def weather_emoji(weather):
     else:
         return weather
 
+
 async def weather(location, element_order):
     async with python_weather.Client() as client:
         # Fetch a weather forecast from a city
@@ -134,6 +140,7 @@ async def weather(location, element_order):
         moon_phase = colored(moon_emoji(phase), "yellow")
         moon_len = len(moon_emoji(phase))
         print(wind_len)
+        
         # Bar lengths for bars and spaces
         lengths = {
             "temperature": temp_len,
@@ -145,6 +152,7 @@ async def weather(location, element_order):
             "day_max": day_max_len,
             "day_min": day_min_len
         }
+        
         # Create a dictionary with all elements
         colored_elements = {
             "temperature": temp,
@@ -156,16 +164,13 @@ async def weather(location, element_order):
             "day_max": day_max,
             "day_min": day_min
         }
+        
         # Calculate max values for each side based on element_order
-
         left_side_elements = [colored_elements[element_order[i]] for i in range(0, 4)]
         right_side_elements = [colored_elements[element_order[i]] for i in range(4, 8)]
 
         max_left_side = max(lengths[element_order[i]] for i in range(0, 4))
         max_right_side = max(lengths[element_order[i]] for i in range(4, 8)) 
-
-
-
 
 
         print(max_right_side)
@@ -205,6 +210,7 @@ def main():
         asyncio.run(weather(args.location, config["element_order"]))
     except python_weather.errors.Error:
         print(colored("Please enter a cityname in this format: richweather <city>", "red"))
+
 
 if __name__ == "__main__":
     main()
