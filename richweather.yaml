@@ -1,0 +1,10 @@
+default_city: Ottawa
+element_order:
+  - moon_phase
+  - humidity
+  - weather
+  - wind_speed
+  - precipitation
+  - temperature
+  - day_max
+  - day_min
