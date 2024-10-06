@@ -116,12 +116,12 @@ async def weather(location, element_order):
 
         # Color the stuff and find lengths
         temp_color = get_temp_color(temp)
-        temp_len = len(f" {temp}󰔀")
-        temp = colored(f" {temp}󰔀", temp_color)
-        day_max_len = len(f"󰸂 {day_max}󰔀")
-        day_max = colored(f"󰸃 {day_max}󰔀", "red")
-        day_min_len = len(f"󰸂 {day_min}󰔀")
-        day_min = colored(f"󰸂 {day_min}󰔀", "blue")
+        temp_len = len(f" {temp}°C")
+        temp = colored(f" {temp}°C", temp_color)
+        day_max_len = len(f"󰸂 {day_max}°C")
+        day_max = colored(f"󰸃 {day_max}°C", "red")
+        day_min_len = len(f"󰸂 {day_min}°C")
+        day_min = colored(f"󰸂 {day_min}°C", "blue")
         weather_show = colored(f"{weather.kind} {weather_emoji(kind)[1]}", weather_emoji(kind)[2])
         weather_len = len(f"{weather.kind} {weather_emoji(kind)[1]}")
         humidity_len = len(f" {humidity}%")
