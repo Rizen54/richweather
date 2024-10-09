@@ -138,24 +138,24 @@ async def weather(location, element_order):
         moon_len = len(moon_emoji(phase))
         lengths = {
             "temperature": temp_len,
+            "day_max": day_max_len,
+            "day_min": day_min_len,
+            "wind_speed": wind_len,
             "weather": weather_len,
             "humidity": humidity_len,
             "precipitation": precep_len,
-            "wind_speed": wind_len,
             "moon_phase": moon_len,
-            "day_max": day_max_len,
-            "day_min": day_min_len
         }
         # Create a dictionary with all elements
         colored_elements = {
             "temperature": temp,
+            "day_max": day_max,
+            "day_min": day_min,
+            "wind_speed": wind_speed,
             "weather": weather_show,
             "humidity": humidity,
             "precipitation": precep,
-            "wind_speed": wind_speed,
             "moon_phase": moon_phase,
-            "day_max": day_max,
-            "day_min": day_min
         }
         # Calculate max values for each side based on element_order
         left_side_elements = [colored_elements[element_order[i]] for i in range(0, 4)]
