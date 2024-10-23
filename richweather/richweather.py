@@ -191,6 +191,8 @@ def main():
         asyncio.run(weather(args.location, config["element_order"]))
     except python_weather.errors.Error:
         print(colored("Please enter a cityname in this format: richweather <city>", "red"))
+    except (json.decoder.JSONDecodeError, json.decoder.JSONDecodeError):
+        print(colored("Something is wrong with either the API or python-weather", "red"))
 
 
 if __name__ == "__main__":
